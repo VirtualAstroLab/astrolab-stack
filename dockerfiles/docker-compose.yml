@@ -10,8 +10,8 @@ services:
     volumes:
       - data:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=clea
-      - MYSQL_DATABASE=clea_user_db
+      - MYSQL_ROOT_PASSWORD=astrolab_login_hml
+      - MYSQL_DATABASE=astrolab_login
   app:
     image: phpmyadmin/phpmyadmin:latest
     links:
