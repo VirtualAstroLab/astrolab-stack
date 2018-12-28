@@ -5,11 +5,24 @@ volumes:
 services:
     astrolab-config-server:
         image: astrolabweb/astrolab-config-server:latest
+        hostname: "astrolab-config-server"
         ports:
                 - "9090:9090"
-    astrolab-eureka-server:
-        image: astrolabweb/astrolab-eureka-server:latest
-        depends_on:
-                - "astrolab-config-server"
-        ports:
-                - "9091:9091"
+        expose:
+                - "9090"
+#    astrolab-eureka-server:
+#        image: astrolabweb/astrolab-eureka-server:latest
+#        hostname: "astrolab-eureka-server"
+#        depends_on:
+#                - "astrolab-config-server"
+#        ports:
+#                - "9091:9091"
+#        links:
+#                - astrolab-config-server
+#        depends_on:
+#                - astrolab-config-server
+environment:
+    server.port: 8080
+    eureka.client.enabled: 'true'
+    eureka.host: eureka-server
+    eureka.instance.preferIpAddress: 'true'
