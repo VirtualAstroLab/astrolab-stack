@@ -45,6 +45,7 @@ services:
         environment:
             - CONFIG_SERVER_URL=http://astrolab-config-server:9090
             - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
+            - MONITORING_SERVER_URL=http://astrolab-monitoring-server:9080
             
         networks:
                 - astrolab-network
