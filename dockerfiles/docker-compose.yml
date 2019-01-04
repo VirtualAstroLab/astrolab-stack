@@ -12,6 +12,22 @@ services:
                 - 9090
         networks:
                 - astrolab-network
+
+#    astrolab-monitoring-server:
+#        image: astrolabweb/astrolab-monitoring-server:latest
+#        hostname: astrolab-monitoring-server
+#        ports:
+#                - 9080:9080
+#        expose:
+#                - 9080
+#        networks:
+#                - astrolab-network
+#        environment:
+#            - CONFIG_SERVER_URL=http://astrolab-config-server:9090
+#            - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
+#        links:
+#                - astrolab-config-server
+#                - astrolab-eureka-server
                 
 
     astrolab-eureka-server:
