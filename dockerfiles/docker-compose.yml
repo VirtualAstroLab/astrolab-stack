@@ -2,54 +2,77 @@ version: '3.3'
 
 volumes:
   data:
-services:
-    astrolab-config-server:
-        image: astrolabweb/astrolab-config-server:latest
-        hostname: astrolab-config-server
-        ports:
-                - 9090:9090
-        expose:
-                - 9090
-        networks:
-                - astrolab-network
 
-    astrolab-monitoring-server:
-        image: astrolabweb/astrolab-monitoring-server:latest
-        hostname: astrolab-monitoring-server
-        ports:
-                - 9080:9080
-        expose:
-                - 9080
-        networks:
-                - astrolab-network
-        environment:
-            - CONFIG_SERVER_URL=http://astrolab-config-server:9090
-            - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
-        links:
-                - astrolab-config-server
-                - astrolab-eureka-server
+services:
+  astrolab-config-server:
+    image: astrolabweb/astrolab-config-server:latest
+    hostname: astrolab-config-server
+    ports:
+      - 9090:9090
+    expose:
+      - 9090
+    networks:
+      - astrolab-network
+
+  astrolab-monitoring-server:
+    image: astrolabweb/astrolab-monitoring-server:latest
+    hostname: astrolab-monitoring-server
+    ports:
+      - 9080:9080
+    expose:
+      - 9080
+    networks:
+      - astrolab-network
+    environment:
+      - CONFIG_SERVER_URL=http://astrolab-config-server:9090
+      - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
+    links:
+      - astrolab-config-server
+      - astrolab-eureka-server
+      - astrolab-zuul-server
                 
 
-    astrolab-eureka-server:
-        image: astrolabweb/astrolab-eureka-server:latest
-        depends_on:
-                - astrolab-config-server
-        ports:
-                - 9091:9091
-        expose:
-                - 9091
-        links:
-                - astrolab-config-server
-        depends_on:
-                - astrolab-config-server
-        environment:
-            - CONFIG_SERVER_URL=http://astrolab-config-server:9090
-            - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
-            - MONITORING_SERVER_URL=http://astrolab-monitoring-server:9080
-            
-        networks:
-                - astrolab-network
+  astrolab-eureka-server:
+    image: astrolabweb/astrolab-eureka-server:latest
+    depends_on:
+      - astrolab-config-server
+    ports:
+      - 9091:9091
+    expose:
+      - 9091
+    links:
+      - astrolab-config-server
+    depends_on:
+      - astrolab-config-server
+    environment:
+      - CONFIG_SERVER_URL=http://astrolab-config-server:9090
+      - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
+      - MONITORING_SERVER_URL=http://astrolab-monitoring-server:9080
+        
+    networks:
+      - astrolab-network
+
+  astrolab-zuul-server:
+    image: astrolabweb/astrolab-zuul-server:latest
+    depends_on:
+      - astrolab-config-server
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    links:
+      - astrolab-config-server
+      - astrolab-eureka-server
+    depends_on:
+      - astrolab-config-server
+    environment:
+      - CONFIG_SERVER_URL=http://astrolab-config-server:9090
+      - EUREKA_SERVER_URL=http://astrolab-eureka-server:9091/eureka/
+      - MONITORING_SERVER_URL=http://astrolab-monitoring-server:9080
+        
+    networks:
+      - astrolab-network
 
 networks:
-    astrolab-network:
-        driver: bridge
+  astrolab-network:
+    driver: bridge
